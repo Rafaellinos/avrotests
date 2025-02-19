@@ -4,6 +4,9 @@ import org.apache.avro.LogicalTypes;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class Utils {
 
   public Schema generateSchema() {
@@ -18,4 +21,15 @@ public class Utils {
             .withDefault(null) // Default value is null
             .endRecord();
   }
+
+  public static String readJson(final String fileName) {
+    try (InputStream in = Utils.class.getClassLoader().getResourceAsStream(fileName)) {
+      if (in != null) {
+        return new String(in.readAllBytes());
+      }
+    } catch (IOException ignored) {
+    }
+    return null;
+  }
+
 }

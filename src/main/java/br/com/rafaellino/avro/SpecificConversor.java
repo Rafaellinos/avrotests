@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class SpecificConversor {
 
-  public byte[] serializeClientIdentifier(ClientIdentifier request) {
+  public static byte[] serializeClientIdentifier(ClientIdentifier request) {
     DatumWriter<ClientIdentifier> writer = new SpecificDatumWriter<>(ClientIdentifier.class);
     byte[] data = new byte[0];
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -31,11 +31,23 @@ public class SpecificConversor {
     return data;
   }
 
-  public ClientIdentifier deSerializeClientIdentifier(byte[] data) {
+  public static ClientIdentifier deSerializeClientIdentifier(byte[] data) {
     DatumReader<ClientIdentifier> reader = new SpecificDatumReader<>(ClientIdentifier.class);
     Decoder decoder;
     try {
       decoder = DecoderFactory.get().binaryDecoder(data, null);
+      return reader.read(null, decoder);
+    } catch (IOException e) {
+      System.out.println("Deserialization error:" + e.getMessage());
+    }
+    return null;
+  }
+
+  public static ClientIdentifier deSerializeClientIdentifier(String data) {
+    DatumReader<ClientIdentifier> reader = new SpecificDatumReader<>(ClientIdentifier.class);
+    Decoder decoder;
+    try {
+      decoder = DecoderFactory.get().jsonDecoder(ClientIdentifier.getClassSchema(), data);
       return reader.read(null, decoder);
     } catch (IOException e) {
       System.out.println("Deserialization error:" + e.getMessage());
