@@ -1,0 +1,15 @@
+{
+  "type":"record",
+  "name":"ClientIdentifier",
+  "namespace":"br.com.rafaellino",
+  "fields":[
+    {
+      "name":"hostName",
+      "type":"string"
+    },
+    {
+      "name":"ipAddress",
+      "type":"string"
+    }
+  ]
+}
