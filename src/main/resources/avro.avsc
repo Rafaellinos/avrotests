@@ -2,7 +2,14 @@
   "type":"record",
   "name":"ClientIdentifier",
   "namespace":"br.com.rafaellino",
-  "fields":[
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
     {
       "name":"hostName",
       "type":"string"
@@ -10,6 +17,18 @@
     {
       "name":"ipAddress",
       "type":"string"
+    },
+    {
+      "name": "price",
+      "type": [
+        "null",
+        {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 15,
+          "scale": 3
+        }
+      ]
     }
   ]
 }

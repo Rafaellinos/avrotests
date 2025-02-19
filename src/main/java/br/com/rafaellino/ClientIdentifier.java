@@ -14,13 +14,17 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -9062719133918035903L;
+  private static final long serialVersionUID = -5494815187368523665L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClientIdentifier\",\"namespace\":\"br.com.rafaellino\",\"fields\":[{\"name\":\"hostName\",\"type\":\"string\"},{\"name\":\"ipAddress\",\"type\":\"string\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClientIdentifier\",\"namespace\":\"br.com.rafaellino\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"hostName\",\"type\":\"string\"},{\"name\":\"ipAddress\",\"type\":\"string\"},{\"name\":\"price\",\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":15,\"scale\":3}]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
+  static {
+    MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.UUIDConversion());
+    MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.DecimalConversion());
+  }
 
   private static final BinaryMessageEncoder<ClientIdentifier> ENCODER =
       new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
@@ -73,8 +77,10 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
     return DECODER.decode(b);
   }
 
+  private java.util.UUID id;
   private java.lang.CharSequence hostName;
   private java.lang.CharSequence ipAddress;
+  private java.math.BigDecimal price;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -85,12 +91,16 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
 
   /**
    * All-args constructor.
+   * @param id The new value for id
    * @param hostName The new value for hostName
    * @param ipAddress The new value for ipAddress
+   * @param price The new value for price
    */
-  public ClientIdentifier(java.lang.CharSequence hostName, java.lang.CharSequence ipAddress) {
+  public ClientIdentifier(java.util.UUID id, java.lang.CharSequence hostName, java.lang.CharSequence ipAddress, java.math.BigDecimal price) {
+    this.id = id;
     this.hostName = hostName;
     this.ipAddress = ipAddress;
+    this.price = price;
   }
 
   @Override
@@ -103,10 +113,26 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
   @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return hostName;
-    case 1: return ipAddress;
+    case 0: return id;
+    case 1: return hostName;
+    case 2: return ipAddress;
+    case 3: return price;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
+  }
+
+  private static final org.apache.avro.Conversion<?>[] conversions =
+      new org.apache.avro.Conversion<?>[] {
+      new org.apache.avro.Conversions.UUIDConversion(),
+      null,
+      null,
+      null,
+      null
+  };
+
+  @Override
+  public org.apache.avro.Conversion<?> getConversion(int field) {
+    return conversions[field];
   }
 
   // Used by DatumReader.  Applications should not call.
@@ -114,10 +140,29 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: hostName = (java.lang.CharSequence)value$; break;
-    case 1: ipAddress = (java.lang.CharSequence)value$; break;
+    case 0: id = (java.util.UUID)value$; break;
+    case 1: hostName = (java.lang.CharSequence)value$; break;
+    case 2: ipAddress = (java.lang.CharSequence)value$; break;
+    case 3: price = (java.math.BigDecimal)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
+  }
+
+  /**
+   * Gets the value of the 'id' field.
+   * @return The value of the 'id' field.
+   */
+  public java.util.UUID getId() {
+    return id;
+  }
+
+
+  /**
+   * Sets the value of the 'id' field.
+   * @param value the value to set.
+   */
+  public void setId(java.util.UUID value) {
+    this.id = value;
   }
 
   /**
@@ -152,6 +197,23 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
    */
   public void setIpAddress(java.lang.CharSequence value) {
     this.ipAddress = value;
+  }
+
+  /**
+   * Gets the value of the 'price' field.
+   * @return The value of the 'price' field.
+   */
+  public java.math.BigDecimal getPrice() {
+    return price;
+  }
+
+
+  /**
+   * Sets the value of the 'price' field.
+   * @param value the value to set.
+   */
+  public void setPrice(java.math.BigDecimal value) {
+    this.price = value;
   }
 
   /**
@@ -195,8 +257,10 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<ClientIdentifier>
     implements org.apache.avro.data.RecordBuilder<ClientIdentifier> {
 
+    private java.util.UUID id;
     private java.lang.CharSequence hostName;
     private java.lang.CharSequence ipAddress;
+    private java.math.BigDecimal price;
 
     /** Creates a new Builder */
     private Builder() {
@@ -209,13 +273,21 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
      */
     private Builder(br.com.rafaellino.ClientIdentifier.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.hostName)) {
-        this.hostName = data().deepCopy(fields()[0].schema(), other.hostName);
+      if (isValidValue(fields()[0], other.id)) {
+        this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.ipAddress)) {
-        this.ipAddress = data().deepCopy(fields()[1].schema(), other.ipAddress);
+      if (isValidValue(fields()[1], other.hostName)) {
+        this.hostName = data().deepCopy(fields()[1].schema(), other.hostName);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
+      }
+      if (isValidValue(fields()[2], other.ipAddress)) {
+        this.ipAddress = data().deepCopy(fields()[2].schema(), other.ipAddress);
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+      }
+      if (isValidValue(fields()[3], other.price)) {
+        this.price = data().deepCopy(fields()[3].schema(), other.price);
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
     }
 
@@ -225,14 +297,62 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
      */
     private Builder(br.com.rafaellino.ClientIdentifier other) {
       super(SCHEMA$, MODEL$);
-      if (isValidValue(fields()[0], other.hostName)) {
-        this.hostName = data().deepCopy(fields()[0].schema(), other.hostName);
+      if (isValidValue(fields()[0], other.id)) {
+        this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.ipAddress)) {
-        this.ipAddress = data().deepCopy(fields()[1].schema(), other.ipAddress);
+      if (isValidValue(fields()[1], other.hostName)) {
+        this.hostName = data().deepCopy(fields()[1].schema(), other.hostName);
         fieldSetFlags()[1] = true;
       }
+      if (isValidValue(fields()[2], other.ipAddress)) {
+        this.ipAddress = data().deepCopy(fields()[2].schema(), other.ipAddress);
+        fieldSetFlags()[2] = true;
+      }
+      if (isValidValue(fields()[3], other.price)) {
+        this.price = data().deepCopy(fields()[3].schema(), other.price);
+        fieldSetFlags()[3] = true;
+      }
+    }
+
+    /**
+      * Gets the value of the 'id' field.
+      * @return The value.
+      */
+    public java.util.UUID getId() {
+      return id;
+    }
+
+
+    /**
+      * Sets the value of the 'id' field.
+      * @param value The value of 'id'.
+      * @return This builder.
+      */
+    public br.com.rafaellino.ClientIdentifier.Builder setId(java.util.UUID value) {
+      validate(fields()[0], value);
+      this.id = value;
+      fieldSetFlags()[0] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'id' field has been set.
+      * @return True if the 'id' field has been set, false otherwise.
+      */
+    public boolean hasId() {
+      return fieldSetFlags()[0];
+    }
+
+
+    /**
+      * Clears the value of the 'id' field.
+      * @return This builder.
+      */
+    public br.com.rafaellino.ClientIdentifier.Builder clearId() {
+      id = null;
+      fieldSetFlags()[0] = false;
+      return this;
     }
 
     /**
@@ -250,9 +370,9 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public br.com.rafaellino.ClientIdentifier.Builder setHostName(java.lang.CharSequence value) {
-      validate(fields()[0], value);
+      validate(fields()[1], value);
       this.hostName = value;
-      fieldSetFlags()[0] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -261,7 +381,7 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'hostName' field has been set, false otherwise.
       */
     public boolean hasHostName() {
-      return fieldSetFlags()[0];
+      return fieldSetFlags()[1];
     }
 
 
@@ -271,7 +391,7 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
       */
     public br.com.rafaellino.ClientIdentifier.Builder clearHostName() {
       hostName = null;
-      fieldSetFlags()[0] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -290,9 +410,9 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
       * @return This builder.
       */
     public br.com.rafaellino.ClientIdentifier.Builder setIpAddress(java.lang.CharSequence value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.ipAddress = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -301,7 +421,7 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
       * @return True if the 'ipAddress' field has been set, false otherwise.
       */
     public boolean hasIpAddress() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -311,7 +431,47 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
       */
     public br.com.rafaellino.ClientIdentifier.Builder clearIpAddress() {
       ipAddress = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'price' field.
+      * @return The value.
+      */
+    public java.math.BigDecimal getPrice() {
+      return price;
+    }
+
+
+    /**
+      * Sets the value of the 'price' field.
+      * @param value The value of 'price'.
+      * @return This builder.
+      */
+    public br.com.rafaellino.ClientIdentifier.Builder setPrice(java.math.BigDecimal value) {
+      validate(fields()[3], value);
+      this.price = value;
+      fieldSetFlags()[3] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'price' field has been set.
+      * @return True if the 'price' field has been set, false otherwise.
+      */
+    public boolean hasPrice() {
+      return fieldSetFlags()[3];
+    }
+
+
+    /**
+      * Clears the value of the 'price' field.
+      * @return This builder.
+      */
+    public br.com.rafaellino.ClientIdentifier.Builder clearPrice() {
+      price = null;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -320,8 +480,10 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
     public ClientIdentifier build() {
       try {
         ClientIdentifier record = new ClientIdentifier();
-        record.hostName = fieldSetFlags()[0] ? this.hostName : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.ipAddress = fieldSetFlags()[1] ? this.ipAddress : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.id = fieldSetFlags()[0] ? this.id : (java.util.UUID) defaultValue(fields()[0]);
+        record.hostName = fieldSetFlags()[1] ? this.hostName : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.ipAddress = fieldSetFlags()[2] ? this.ipAddress : (java.lang.CharSequence) defaultValue(fields()[2]);
+        record.price = fieldSetFlags()[3] ? this.price : (java.math.BigDecimal) defaultValue(fields()[3]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -349,43 +511,6 @@ public class ClientIdentifier extends org.apache.avro.specific.SpecificRecordBas
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    out.writeString(this.hostName);
-
-    out.writeString(this.ipAddress);
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      this.hostName = in.readString(this.hostName instanceof Utf8 ? (Utf8)this.hostName : null);
-
-      this.ipAddress = in.readString(this.ipAddress instanceof Utf8 ? (Utf8)this.ipAddress : null);
-
-    } else {
-      for (int i = 0; i < 2; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          this.hostName = in.readString(this.hostName instanceof Utf8 ? (Utf8)this.hostName : null);
-          break;
-
-        case 1:
-          this.ipAddress = in.readString(this.ipAddress instanceof Utf8 ? (Utf8)this.ipAddress : null);
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
 
 

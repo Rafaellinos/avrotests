@@ -69,6 +69,7 @@
                             <goal>idl-protocol</goal>
                         </goals>
                         <configuration>
+                            <enableDecimalLogicalType>true</enableDecimalLogicalType>
                             <sourceDirectory>${project.basedir}/src/main/resources/</sourceDirectory>
                             <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
                         </configuration>

@@ -1,4 +1,6 @@
 {
   "hostName": "localhost",
-  "ipAddress": "127.0.0.1"
+  "ipAddress": "127.0.0.1",
+  "id": "e8493cd9-03a6-418b-bc5a-7c6f9942b18f",
+  "price": {"bytes": "3.99"}
 }
